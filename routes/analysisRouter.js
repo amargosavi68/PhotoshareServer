@@ -24,3 +24,5 @@ analysisRouter.route('/')
 .delete((req, res, next) =>{
      res.end("Not supported!");
 });
+
+module.exports = analysisRouter;

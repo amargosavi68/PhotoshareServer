@@ -7,6 +7,17 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var photoRouter = require('./routes/photoRouter');
+var savePhotoRouter = require('./routes/savePhoto');
+var analysisRouter  = require('./routes/analysisRouter');
+
+const mongoose = require('mongoose');
+const url = "mongodb://localhost:27017/photoServer";
+
+const connect = mongoose.connect(url);
+connect.then((db) =>{
+  console.log("Connected to the server correctly.");
+})
+.catch((err) => next(err));
 
 var app = express();
 
@@ -24,6 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/uploadphoto',photoRouter);
+app.use('/savephoto',savePhotoRouter);
+app.use('/analysis',analysisRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

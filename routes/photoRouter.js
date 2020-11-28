@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Photos = require('../models/photos');
 
 const photoRouter = express.Router();
 
@@ -7,23 +9,38 @@ photoRouter.use(bodyParser.json());
 
 //all methods are chained together.
 photoRouter.route('/')
-.all((req, res, next) =>{
-     res.statusCode = 200;
-     res.setHeader('Content-Type', 'text/plain');
-     next();
-})
 .get((req, res, next) =>{
-     res.end("Will send you soon!");
+     Photos.find({})
+     .then(photos => {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json(photos);
+     }, (err) => next(err))
+     .catch(err => next(err));
+})
+.post((req, res, next) =>{
+     Photos.create(req.body)
+     .then(photo => {
+          console.log("Photo uploaded! ", photo)
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json(photo);
+     }, (err) => next(err))
+     .catch(err => next(err));
 })
 .put((req, res, next) =>{
      res.statusCode = 403;
      res.end("Not Supported!");
 })
-.post((req, res, next) =>{
-     res.end("Will uploading your photo.!");
-})
 .delete((req, res, next) =>{
-     res.end("Deleting all photos!");
+     Photos.findByIdAndRemove(req.body)
+     .then((resp) => {
+          console.log("Photo Deleted having id: ", req.body)
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json(resp);
+     }, (err) => next(err))
+     .catch(err => next(err));
 });
 
 
