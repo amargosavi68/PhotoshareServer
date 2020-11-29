@@ -36,20 +36,24 @@ uploadRouter.route('/')
      res.statusCode = 403;
      res.send("GET Operation not supported!");
 })
-.post(cors.corsWithOptions, upload.single('imageFile'), (req, res, next) =>{
+.post(cors.corsWithOptions, upload.single('file'), (req, res, next) =>{
      //console.log("Request: ", req);
      if (!req.file) {
           res.status(500).send({message: "Upload Failed"});
      }
      else {
-          req.body.image = "images/"+req.file.originalname;
-          console.log(req.body);
+          req.body.image = "images/"+req.file.filename;
+          //console.log(req.body);
           Photos.create(req.body)
           .then(photo => {
-               console.log("Photo uploaded! ", photo)
-               res.statusCode = 200;
-               res.setHeader('Content-Type', 'application/json');
-               res.json(photo);
+               photo.save()
+               .then(photo =>{
+                    console.log("Photo uploaded! ", photo)
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(photo);
+               }, (err) => next(err))
+               .catch(err => next(err));   
           }, (err) => next(err))
           .catch(err => next(err));
      }
