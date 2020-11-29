@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const Photos = require('../models/photos');
 const cors = require('./cors');
 
-
 const photoRouter = express.Router();
 
 photoRouter.use(bodyParser.json());
@@ -31,12 +30,12 @@ photoRouter.route('/')
 });
 
 photoRouter.route('/:photoId')
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200);})
 .delete(cors.corsWithOptions, (req, res, next) =>{
-     console.log(req.params.photoId);
+     //console.log(req.params.photoId);
      Photos.findByIdAndDelete(req.params.photoId)
      .then((resp) => {
-          console.log("Photo Deleted having id: ", req.params.photoId)
+          console.log("Photo Deleted having id: ", req.params.photoId);
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
           res.json(resp);

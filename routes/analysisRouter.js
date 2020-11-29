@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const Photos = require('../models/photos');
 const cors = require('./cors');
 
@@ -7,10 +8,10 @@ const analysisRouter = express.Router();
 
 analysisRouter.use(bodyParser.json());
 
-analysisRouter.route('/')
+analysisRouter.route('/:category')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req, res, next) =>{
-     Photos.find({})
+     Photos.find({category: req.params.category})
      .then(photos => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
