@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const fileStore = require('multer');
 const multer = require('multer');
+const cors = require('./cors');
 
 var storage = multer.diskStorage({
      destination: (req, file, cb) => {
@@ -28,20 +29,21 @@ const savePhotoRouter = express.Router();
 savePhotoRouter.use(bodyParser.json());
 
 savePhotoRouter.route('/')
-.get((req, res,next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req, res,next) => {
      res.statusCode = 403;
      res.end("GET Operation NOT supported!");
 })
-.put((req, res,next) => {
+.put(cors.corsWithOptions, (req, res,next) => {
      res.statusCode = 403;
      res.end("GET Operation NOT supported!");
 })
-.post(upload.single('image'), (req, res) => {
+.post(cors.corsWithOptions, upload.single('image'), (req, res) => {
      res.statusCode = 200;
      res.setHeader('Content-Type', 'application/json');
      res.json(req.file);
 })
-.delete((req, res,next) => {
+.delete(cors.corsWithOptions, (req, res,next) => {
      res.statusCode = 403;
      res.end("GET Operation NOT supported!");
 });

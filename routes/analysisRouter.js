@@ -1,16 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('./cors');
 
 const analysisRouter = express.Router();
 
 analysisRouter.use(bodyParser.json());
 
 analysisRouter.route('/')
-.all((req, res, next) => {
-     res.statusCode = 200;
-     res.setHeader('Content-Type', 'application/json');
-     next();
-})
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get((req, res, next) =>{
      res.end("Will send you soon!");
 })

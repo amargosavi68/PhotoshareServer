@@ -3,10 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('./routes/cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var photoRouter = require('./routes/photoRouter');
+var uploadRouter = require('./routes/uploadRouter');
 var savePhotoRouter = require('./routes/savePhoto');
 var analysisRouter  = require('./routes/analysisRouter');
 
@@ -21,6 +23,7 @@ connect.then((db) =>{
 
 var app = express();
 
+app.use(cors.cors);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -34,7 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routing modules
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/uploadphoto',photoRouter);
+app.use('/home',photoRouter);
+app.use('/uploadphoto',uploadRouter);
 app.use('/savephoto',savePhotoRouter);
 app.use('/analysis',analysisRouter);
 
