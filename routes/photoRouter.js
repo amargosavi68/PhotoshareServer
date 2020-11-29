@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Photos = require('../models/photos');
 const cors = require('./cors');
 
+
 const photoRouter = express.Router();
 
 photoRouter.use(bodyParser.json());

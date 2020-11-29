@@ -39,7 +39,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/home',photoRouter);
 app.use('/uploadphoto',uploadRouter);
-app.use('/savephoto',savePhotoRouter);
 app.use('/analysis',analysisRouter);
 
 // catch 404 and forward to error handler

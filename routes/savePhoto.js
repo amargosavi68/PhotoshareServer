@@ -38,7 +38,8 @@ savePhotoRouter.route('/')
      res.statusCode = 403;
      res.end("GET Operation NOT supported!");
 })
-.post(cors.corsWithOptions, upload.single('image'), (req, res) => {
+.post(cors.corsWithOptions, upload.single('imageFile'), (req, res) => {
+     console.log(req.file);
      res.statusCode = 200;
      res.setHeader('Content-Type', 'application/json');
      res.json(req.file);
